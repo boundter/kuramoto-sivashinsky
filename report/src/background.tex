@@ -1,0 +1,87 @@
+\section{Background}
+%TODO: Nice introduction and explanation of the different terms
+The PDE reads
+\begin{equation}
+  \frac{\partial u }{\partial t} + \frac{1}{2} \frac{\partial u^2 }{\partial x} + \frac{\partial^2 u }{\partial x^2} + \frac{\partial^4 u }{\partial x^4} = 0.\label{eq:PDE}
+\end{equation}
+
+This is a reduced form, which can always be reached by scaling of $t$, $u$ or $x$.
+Any coefficient in front of the time-derivative can be reduced by scaling the time, without affecting any of the other coefficients, so we do not need to consider this term.
+This reduces our system to
+\begin{equation}
+  \frac{\alpha}{2} \frac{\partial u^2 }{\partial x} + \beta \frac{\partial^2 u }{\partial x^2} + \gamma \frac{\partial^4 u }{\partial x^4} = 0.
+\end{equation}
+We will use the transformation $ u =\beta^{3/2}/(\alpha \gamma^{1/2}) v $.
+Now we get
+\begin{equation}
+  \frac{1}{2} \frac{\beta^3}{\alpha \gamma} \frac{\partial v^2 }{\partial x} + \frac{\beta^{5/2}}{\alpha \gamma^{1/2}} \frac{\partial^2 v }{\partial x^2} + \frac{\beta^{3/2} \gamma^{1/2}}{\alpha} \frac{\partial^4 v }{\partial x^4} = 0.
+\end{equation}
+Next we scale $x$ by $ x = \frac{\gamma^{1/2}}{\beta^{1/2}} y $.
+This leads to
+\begin{equation}
+  \frac{1}{2} \frac{\beta^{7/2}}{\alpha \gamma^{3/2}} \frac{\partial v^2 }{\partial y} + \frac{\beta^{7/2}}{\alpha \gamma^{3/2}} \frac{\partial^2 v }{\partial y^2} + \frac{\beta^{7/2}}{\alpha \gamma^{3/2}} \frac{\partial^4 v }{\partial y^4} = 0.
+\end{equation}
+There is the same coefficient in front of every term, so by simply multiplying by the inverse we get a coefficient free equation.
+
+This equation can not be solved analytically, even without the coefficients.
+But a typical ansatz for a PDE is to go the Fourier-space.
+Here we will use the Fourier-space of $x$.
+For u we assume periodic boundary conditions, to make the Fourier-space discrete, so $ u(x, t) = u(x + L, t) $.
+Using this and $ K = 2 \pi/L $ transforms $u$ to
+\begin{align}
+  C_n(t) & = \frac{1}{L} \int_0^L dx \; u(x,t) e^{-in K x}, \\
+  u(x, t) & = \sum_{n \in Z} C_n (t) e^{in K x}. \label{eq:inverse}
+\end{align}
+Because $u$ is a real function we know that $C_{-n}(t) = {C_n(t)}^{*}$.
+
+Now we can plug (\ref{eq:inverse}) in equation (\ref{eq:PDE}) and use $1/2 \partial_x u^2 = u \partial_x u$ to get
+\begin{equation}
+  \sum_{n \in \mathbb{Z}} e^{in K x} \left[ \frac{d C_n(t)}{dt} + C_n(t) \sum_{l \in \mathbb{Z}} C_l(t) i l K e^{il K x} - n^2 K^2 C_n(t) + n^4 K^4 C_n(t) \right] = 0.
+\end{equation}
+We can rewrite the $u \partial_x u$ further by first considering the sums
+\begin{equation}
+  \sum_{n \in \mathbb{Z}} C_n(t)  e^{in K x} \sum_{l \in \mathbb{Z}} C_l(t) i l K e^{il K x} = \sum_{n \in \mathbb{Z}} \sum_{l \in \mathbb{Z}} C_n(t) C_l(t) i l K e^{i (l+n) K x}.
+\end{equation}
+The both sums can easily be switched, since they are bounded.
+Next we introduce a new variable $m = n + l$.
+This is a one-to-one-map for constant $l$, so we can simply set $n = m - l$ and replace the sum over n by the sum over $m$,
+\begin{equation}
+  \sum_{n \in \mathbb{Z}} \sum_{l \in \mathbb{Z}} C_n(t) C_l(t) i l K e^{i (l+n) K x} = \sum_{l \in \mathbb{Z}} \sum_{m \in \mathbb{Z}} e^{i m K x} i l K C_l(t) C_{m - l}(t).
+\end{equation}
+Both sums are still bounded, so we can switch them again and reordering of the terms leads to
+\begin{equation}
+  u \partial_x u =  \sum_{m \in \mathbb{Z}} e^{i m K x} \sum_{l \in \mathbb{Z}} i l K C_l(t) C_{m - l}(t).
+\end{equation}
+This leads us to a system of coupled ODE with infinite dimensionality
+\begin{equation}
+  \frac{d C_n(t)}{dt} + \sum_{m \in \mathbb{Z}} i m K C_m(t) C_{n - m}(t) -
+  n^2 K^2 C_n(t) + n^4 K^4 C_n(t) = 0.
+\end{equation}
+It still can not be solved analytically.
+But if we reduce the system to a finite number of modes we will be able to solve it numerically.
+To get a good estimate for the number of modes we can use the linear approximation
+\begin{equation}
+  \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t).
+\end{equation}
+$C_n$ is a complex number, so we need to consider both parts, the real one and the imaginary one.
+But according to the linearized ODE both will evolve according to the same ODE, so let us call $c_n$ the real part of $C_n$.
+The calculation for the imaginary part is exactly the same.
+If $c_n = 0$ or $n = 0$ we will always have $d_t c_n = 0$, so nothing happens.
+
+First we assume $c_n > 0$, so we need $d_t c_n > 0$ for it to grow.
+This leads us to $n^2 K^2 - n^4 K^4 > 0$. But this can only be fulfilled for $1/K > n$.
+
+Next we assume $c_n < 0$, so we need $d_t c_n < 0$ for it to grow.
+This leads us again to $n^2 K^2 - n^4 K^4 > 0$.
+
+Regardless of the sign of the real or imaginary part of $C_n$, we will always need $1/K > n$. Or in other words, the number of modes $\abs{n} < N$ that grow is given by
+\begin{equation}
+  N = \left \lfloor{1/K}\right \rfloor = \left \lfloor{\frac{L}{2\pi}}\right \rfloor.
+\end{equation}
+Here we can see that most modes disappear over time.
+For $L < 2 \pi$ we do not have any modes that grow according to the linear approximation, so the velocity on the film will tend to zero.
+
+Now we can use $N$ to get the number of significant modes.
+Let us say the number of modes we want to look at is $\abs{n} < 3N$, to account for the nonlinear term.
+This is the Galerkin approximation of the Kuramoto-Sivashinsky equation and
+it can be solved numerically
