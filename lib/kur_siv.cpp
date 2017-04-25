@@ -41,7 +41,7 @@ KuramotoSivashinsky::KuramotoSivashinsky(double step, double L,
       modes.push_back(i);
     }
     a.push_back(ai);
-    eah.push_back(ai*h);
+    eah.push_back(exp(ai*h));
   }
 }
 
