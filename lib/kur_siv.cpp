@@ -57,26 +57,37 @@ vector<double> KuramotoSivashinsky::Getu(vector<double>* x) {
   return u;
 }
 
+
 vector<complex<double> > KuramotoSivashinsky::GetF(vector<complex<double> >* c) {
   vector<complex<double> > F, G = (*c);
   for (int i = 0; i < G.size(); ++i) {
     F.push_back(0);
     for (int j = -N + i; j <= N; ++j) {
       complex<double> C_off, C_norm;
-      if (j < 0) {
-        C_norm = conj(G[-j]);
-      }
-      else {
-        C_norm = G[j];
-      }
-      if (i - j < 0) {
-        C_off = conj(G[j - i]);
-      }
-      else {
-        C_off = G[i-j];
-      }
+
+      if (j < 0) C_norm = conj(G[-j]);
+      else C_norm = G[j];
+
+      if (i - j < 0) C_off = conj(G[j - i]);
+      else C_off = G[i-j];
+
       F[i] -= C_off*C_norm*complex<double>(0., j*K);
     }
   }
   return F;
+}
+
+
+void KuramotoSivashinsky::Integrate() {
+  vector<complex<double> > C_before = C;
+  vector<complex<double> > F = GetF(&C_before);
+  for (int i = 0; i < modes.size(); ++i) {
+    int j = modes[i];
+    C_before[j] = C_before[j]*eah[j] + F[j]*(eah[j] - 1)/a[j];
+  }
+  vector<complex<double> > F_new = GetF(&C_before);
+  for (int i = 0; i < modes.size(); ++i) {
+    int j = modes[i];
+    C[j] = C_before[j] + (F_new[j] - F[j])*(eah[j] - 1 - a[j]*h)/(a[j]*a[j]*h);
+  }
 }

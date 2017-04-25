@@ -44,6 +44,7 @@ public:
   vector<double> Geteah() {return eah;}
   vector<int> Getmodes() {return modes;}
   vector<double> Getu(vector<double>*);
+  void Integrate();
 };
 
 #endif
