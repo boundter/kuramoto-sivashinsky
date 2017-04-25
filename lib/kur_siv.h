@@ -35,6 +35,7 @@ class KuramotoSivashinsky {
   vector<double> a; // a = n^2*K^2 - n^4*K^4
   vector<double> eah; // eah = exp(a*h)
   vector<int> modes; // evolving modes (a, C =/= 0)
+  vector<complex<double> > GetF(vector<complex<double> >*);
 
 public:
   KuramotoSivashinsky(double, double, int);
