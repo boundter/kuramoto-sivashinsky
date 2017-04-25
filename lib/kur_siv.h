@@ -42,7 +42,7 @@ public:
   vector<double> Geta() {return a;}
   vector<double> Geteah() {return eah;}
   vector<int> Getmodes() {return modes;}
-  vector<double> Getu(double);
+  vector<double> Getu(vector<double>*);
 };
 
 #endif

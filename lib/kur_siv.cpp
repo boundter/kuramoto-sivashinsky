@@ -44,3 +44,15 @@ KuramotoSivashinsky::KuramotoSivashinsky(double step, double L,
     eah.push_back(ai*h);
   }
 }
+
+
+vector<double> KuramotoSivashinsky::Getu(vector<double>* x) {
+  vector<double> u;
+  for (int i = 0; i < (*x).size(); ++i) {
+    u.push_back(C[0].real());
+    for (int j = 1; j < C.size(); ++j) {
+      u[i] += 2*C[j].real()*cos(j*K*(*x)[i]) - 2*C[j].imag()*sin(j*K*(*x)[i]);
+    }
+  }
+  return u;
+}
