@@ -38,13 +38,14 @@ for i in range(0, modes.shape[0]):
     cmodes.append(cmode)
 cmodes = np.array(cmodes, dtype=np.complex128)
 n = np.arange(0, cmodes[0].size)
+t = (modes.shape[0] - 1)*header["h"]
 
 fig, ax = plt.subplots()
 ax.set_xlabel(r"$n$")
 ax.set_ylabel(r"$\vert C_n \vert$")
 width = 0.35
-ax.bar(n, np.abs(cmodes[0]), width, fill=False, ls="-", label=r"$t=0$")
-ax.bar(n, np.abs(cmodes[-1]), width, color='r', label=r"$t=1$")
+ax.bar(n, np.abs(cmodes[0]), width, fill=False, ls="-", label=r"$t=0.00$")
+ax.bar(n, np.abs(cmodes[-1]), width, color='r', label=r"$t=%.2f$" % t)
 ax.set_xlim(0., 50.)
 ax.legend(loc="best")
 fig.tight_layout()
