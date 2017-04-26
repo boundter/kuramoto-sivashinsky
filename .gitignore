@@ -2,7 +2,7 @@
 .DS_Store
 
 # executables
-*.o
+*.x
 
 # jupyter-trash
 .ipynb_checkpoints
