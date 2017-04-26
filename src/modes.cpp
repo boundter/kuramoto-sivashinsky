@@ -26,8 +26,8 @@ using namespace std;
 
 int main() {
   const double h = 0.001;
-  const double L = 10.;
-  const int N = 30;
+  const double L = 40.;
+  const int N = 120;
   const int n = 1000;
   FILE * datafile = fopen("data/modes.dat", "w");
 
@@ -35,12 +35,14 @@ int main() {
 
   KuramotoSivashinsky kuramoto(h, L, N);
   vector<complex<double> > C = kuramoto.GetC();
+  // Save the modes to file
   fprintf(datafile, "%.9f %.9f", C[0].real(), C[0].imag());
   for (int i = 1; i < C.size(); ++i) {
     fprintf(datafile, " %.9f %.9f", C[i].real(), C[i].imag());
   }
   fprintf(datafile, "\n");
   fflush(datafile);
+  // Integrate the system and save the modes after every step
   for (int i = 0; i < n; ++i) {
     kuramoto.Integrate();
     C = kuramoto.GetC();
