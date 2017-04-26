@@ -23,9 +23,11 @@
 KuramotoSivashinsky::KuramotoSivashinsky(double step, double L,
                                          int number_modes) {
   h = step;
-  K = 2*M_PI/L;
+  K = 2*M_PI/L; // Wave vector
   N = number_modes;
-  long seed = 123456;
+
+  // Create a random distribution of modes
+  long seed = 123456; // arbitrary seed for the RNG
   mt19937_64 gen (seed);
   uniform_real_distribution<double> dist(-1.0, 1.0);
   C.resize(N + 1, 0);
@@ -34,6 +36,10 @@ KuramotoSivashinsky::KuramotoSivashinsky(double step, double L,
     C[i] = complex<double> (dist(gen), dist(gen));
   }
 
+  // Calculate the constant a=i**2*K**2 - i**4*K**4 and eah=exp(a*h) to save
+  // computing-time later on.
+  // For a=0 there won't be any evolution, so we can exclude these modes.
+  // The evolving modes are saved in modes.
   for (int i = 0; i <= N; ++i) {
     double ai = i*i*K*K - i*i*i*i*K*K*K*K;
     double precision = 1e-12;
@@ -48,6 +54,10 @@ KuramotoSivashinsky::KuramotoSivashinsky(double step, double L,
 
 vector<double> KuramotoSivashinsky::Getu(vector<double>* x) {
   vector<double> u;
+  // Calculate u by using the discrete inverse Fouriertransformation
+  // u = sum_n(C_n*exp(i*n*K*x)).
+  // Since u is real the modes C_(-n) = C_n^*, this reduces to trigonometric
+  // equations.
   for (int i = 0; i < (*x).size(); ++i) {
     u.push_back(C[0].real());
     for (int j = 1; j < C.size(); ++j) {
@@ -62,6 +72,7 @@ vector<complex<double> > KuramotoSivashinsky::GetF(vector<complex<double> >* c) 
   vector<complex<double> > F, G = (*c);
   for (int i = 0; i < G.size(); ++i) {
     F.push_back(0);
+    // Conjugate the C, if their index is smaller than 0.
     for (int j = -N + i; j <= N; ++j) {
       complex<double> C_off, C_norm;
 

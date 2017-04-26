@@ -25,9 +25,14 @@
 #include <cmath> // M_PI
 #include <random>
 
+
 using namespace std;
 
+
+// Class to solve the Kuramoto-Sivashinsky-ODE using the ETD2RK algortihm.
+// The ODE is stiff, so Euler or RK won't work by themselves.
 class KuramotoSivashinsky {
+
   vector<complex<double> > C; // Fourier modes
   int N; // number of modes to consider
   double h; // time-step
@@ -35,15 +40,32 @@ class KuramotoSivashinsky {
   vector<double> a; // a = n^2*K^2 - n^4*K^4
   vector<double> eah; // eah = exp(a*h)
   vector<int> modes; // evolving modes (a, C =/= 0)
-  vector<complex<double> > GetF(vector<complex<double> >*);
+
+  // Calculates the factor F for given modes (needed for ETD2RK)
+  // vector<complex<double> >* c - pointer to the modes
+  // Returns F
+  vector<complex<double> > GetF(vector<complex<double> >* c);
 
 public:
-  KuramotoSivashinsky(double, double, int);
+
+  // Constructor for the ODE. Inputs are h, L, N.
+  // h - time-step
+  // L - spatial period
+  // N - number of modes to consider
+  KuramotoSivashinsky(double h, double L, int N);
+
   vector<complex<double> > GetC() {return C;}
   vector<double> Geta() {return a;}
   vector<double> Geteah() {return eah;}
   vector<int> Getmodes() {return modes;}
-  vector<double> Getu(vector<double>*);
+
+  // Returns the velocity-field for the current modes at the given
+  // x-coordinates.
+  // x - spatial coordinates
+  // Returns u - the velocity field
+  vector<double> Getu(vector<double>* x);
+
+  // Integrates the system one timestep by h using ETD2RK.
   void Integrate();
 };
 
