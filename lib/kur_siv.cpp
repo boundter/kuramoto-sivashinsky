@@ -25,6 +25,7 @@ KuramotoSivashinsky::KuramotoSivashinsky(double step, double L,
   h = step;
   K = 2*M_PI/L; // Wave vector
   N = number_modes;
+  t = 0;
 
   // Create a random distribution of modes
   long seed = 123456; // arbitrary seed for the RNG
@@ -101,4 +102,5 @@ void KuramotoSivashinsky::Integrate() {
     int j = modes[i];
     C[j] = C_before[j] + (F_new[j] - F[j])*(eah[j] - 1 - a[j]*h)/(a[j]*a[j]*h);
   }
+  t += h;
 }

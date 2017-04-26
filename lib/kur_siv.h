@@ -40,6 +40,7 @@ class KuramotoSivashinsky {
   vector<double> a; // a = n^2*K^2 - n^4*K^4
   vector<double> eah; // eah = exp(a*h)
   vector<int> modes; // evolving modes (a, C =/= 0)
+  double t; // time
 
   // Calculates the factor F for given modes (needed for ETD2RK)
   // vector<complex<double> >* c - pointer to the modes
@@ -58,6 +59,7 @@ public:
   vector<double> Geta() {return a;}
   vector<double> Geteah() {return eah;}
   vector<int> Getmodes() {return modes;}
+  double Gett() {return t;}
 
   // Returns the velocity-field for the current modes at the given
   // x-coordinates.
