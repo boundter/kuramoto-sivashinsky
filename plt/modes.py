@@ -18,19 +18,21 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-sys.path.insert(0, "lib")
+sys.path.insert(0, "lib") # for import of fileoperations
 import numpy as np
 import matplotlib.pyplot as plt
 from fileoperations import ReadFile
 
+# Define size of the plot for the rport
 plt.rcParams["figure.figsize"] = [8, 5]
 plt.rcParams["font.size"] = 17
 
 header, modes = ReadFile("data/modes.dat", 1, " ")
-modes = modes.transpose()
+modes = modes.transpose() # data is in the wrong format
 cmodes = []
 
 # TODO: Find a more pythonic way
+# Save the modes as complex numbers
 for i in range(0, modes.shape[0]):
     cmode = []
     for j in range(0, int(modes[i].size/2)):
@@ -38,12 +40,12 @@ for i in range(0, modes.shape[0]):
     cmodes.append(cmode)
 cmodes = np.array(cmodes, dtype=np.complex128)
 n = np.arange(0, cmodes[0].size)
-t = (modes.shape[0] - 1)*header["h"]
+t = (modes.shape[0] - 1)*header["h"] # dynamic time
 
 fig, ax = plt.subplots()
 ax.set_xlabel(r"$n$")
 ax.set_ylabel(r"$\vert C_n \vert$")
-width = 0.35
+width = 0.35 # width of the bars
 ax.bar(n, np.abs(cmodes[0]), width, fill=False, ls="-", label=r"$t=0.00$")
 ax.bar(n, np.abs(cmodes[-1]), width, color='r', label=r"$t=%.2f$" % t)
 ax.set_xlim(0., 50.)
