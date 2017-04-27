@@ -20,17 +20,41 @@
 #include <cstdio>
 #include <vector>
 #include <string>
-#include <cmath> // M_PI
+#include <cmath> // M_PI, floor
 #include "../lib/kur_siv.h"
 
 using namespace std;
 
-int main() {
-  const double h = 0.001;
-  const double L = 40.;
+int main(int argc, char *argv[]) {
+  const double h = 0.01;
+  const double L = atof(argv[1]);
   const int N = 4*floor(L/(2*M_PI));
-  const int n = 1000;
-  FILE * datafile = fopen("data/veclocity.dat", "w");
+  const int n = 20000;
+  const double spatial_resolution = 200;
+  FILE * datafile = fopen("data/velocity.dat", "w");
+  fprintf(datafile, "# h= %.9f , L= %.9f , N= %d\n", h, L, N);
+
+  KuramotoSivashinsky kuramoto(h, L, N);
+  vector<double> x;
+  for (int i = 0; i < spatial_resolution; ++i) {
+    x.push_back(i*L/spatial_resolution);
+  }
+  vector<double> u = kuramoto.Getu(&x);
+  fprintf(datafile, "%.4f", kuramoto.Gett());
+  for (int j = 0; j < u.size(); ++j) {
+    fprintf(datafile, " %.6f", u[j]);
+  }
+  fprintf(datafile, "\n");
+
+  for (int i = 0; i < n; ++i) {
+    kuramoto.Integrate();
+      vector<double> u = kuramoto.Getu(&x);
+      fprintf(datafile, "%.4f", kuramoto.Gett());
+      for (int j = 0; j < x.size(); ++j) {
+        fprintf(datafile, " %.6f", u[j]);
+      }
+      fprintf(datafile, "\n");
+  }
 
   fclose(datafile);
 }
