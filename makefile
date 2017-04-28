@@ -12,10 +12,13 @@ VELOCITY = velocity
 VELOCITY_PLOT_PREFIx = $(PLT_DIR)$(VELOCITY)_
 
 L = 6.29 10 15 20 25 30
-L_PLOTS = $(addprefix $(PLT_DIR)$(VELOCITY)_L, $(L).png)
+L_PLOTS = $(addprefix $(PLT_DIR)$(VELOCITY)_$(MODES)_L, $(L).png)
+N = 16 12 8 7
+N_PLOTS = $(addprefix $(PLT_DIR)$(VELOCITY)_$(MODES)_N, $(N).png)
 
 modes: $(PLT_DIR)$(MODES).pdf
 velocity: $(L_PLOTS)
+n : $(N_PLOTS)
 
 #-------------------------------------------------------------------------------
 # Modes
@@ -39,4 +42,15 @@ $(L_PLOTS): $(OBJ_DIR)$(VELOCITY).x $(PLT_DIR)$(VELOCITY).py
 	python3 $(PLT_DIR)$(VELOCITY).py
 
 $(OBJ_DIR)$(VELOCITY).x: $(SRC_DIR)$(VELOCITY).cpp
+	$(CXX) $< $(LIBS) $(FLAGS) -o $@;
+
+#-------------------------------------------------------------------------------
+# Velocity_modes
+#-------------------------------------------------------------------------------
+
+$(N_PLOTS): $(OBJ_DIR)$(VELOCITY)_$(MODES).x $(PLT_DIR)$(VELOCITY)_$(MODES).py
+	$(OBJ_DIR)$(VELOCITY)_$(MODES).x$(subst .png,,$(subst  plt/velocity_modes_N,, $@))
+	python3 $(PLT_DIR)$(VELOCITY)_$(MODES).py
+
+$(OBJ_DIR)$(VELOCITY)_$(MODES).x: $(SRC_DIR)$(VELOCITY)_$(MODES).cpp
 	$(CXX) $< $(LIBS) $(FLAGS) -o $@;
