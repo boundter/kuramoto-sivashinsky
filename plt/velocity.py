@@ -31,7 +31,8 @@ header, field = ReadFile("data/velocity.dat", 1, " ")
 t = field[0]
 u = field[1:]
 x = np.linspace(0., header["L"], num=u.shape[0], endpoint=False)
-u_min, u_max = -np.abs(u[-1]).max(), np.abs(u[-1]).max()
+u_min, u_max = -np.abs(u.transpose()[-1]).max(),\
+                np.abs(u.transpose()[-1]).max()
 
 x_new = []
 for i in range(0, u.shape[0]):
