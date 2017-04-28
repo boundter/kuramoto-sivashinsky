@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
   const double h = 0.01;
   const double L = 60;
   const int N = 4*floor(L/(2*M_PI));
-  const int n = 40000;
+  const int n = 20000;
   const int number_particles = L/2;
   FILE * datafile = fopen("data/particles.dat", "w");
   fprintf(datafile, "# h= %.9f , L= %.9f , N= %d\n", h, L, N);
