@@ -9,16 +9,17 @@ DAT_DIR = data/
 
 MODES = modes
 VELOCITY = velocity
-VELOCITY_PLOT_PREFIx = $(PLT_DIR)$(VELOCITY)_
+PARTICLES = particles
 
-L = 6.29 10 15 20 25 30
-L_PLOTS = $(addprefix $(PLT_DIR)$(VELOCITY)_$(MODES)_L, $(L).png)
+L = 6.29 10 15 20 25 30 50 70 100
+L_PLOTS = $(addprefix $(PLT_DIR)$(VELOCITY)_L, $(L).png)
 N = 16 12 8 7
 N_PLOTS = $(addprefix $(PLT_DIR)$(VELOCITY)_$(MODES)_N, $(N).png)
 
 modes: $(PLT_DIR)$(MODES).pdf
 velocity: $(L_PLOTS)
 n : $(N_PLOTS)
+particles: $(PLT_DIR)$(PARTICLES).pdf
 
 #-------------------------------------------------------------------------------
 # Modes
@@ -54,3 +55,14 @@ $(N_PLOTS): $(OBJ_DIR)$(VELOCITY)_$(MODES).x $(PLT_DIR)$(VELOCITY)_$(MODES).py
 
 $(OBJ_DIR)$(VELOCITY)_$(MODES).x: $(SRC_DIR)$(VELOCITY)_$(MODES).cpp
 	$(CXX) $< $(LIBS) $(FLAGS) -o $@;
+
+#-------------------------------------------------------------------------------
+# Particles
+#-------------------------------------------------------------------------------
+
+$(PLT_DIR)$(PARTICLES).pdf: $(OBJ_DIR)$(PARTICLES).x $(PLT_DIR)$(PARTICLES).py
+	python3 $(PLT_DIR)$(PARTICLES).py
+
+$(OBJ_DIR)$(PARTICLES).x: $(SRC_DIR)$(PARTICLES).cpp
+	$(CXX) $< $(LIBS) $(FLAGS) -o $@;
+	$@
