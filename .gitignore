@@ -13,6 +13,9 @@ __pycache__
 # testfiles
 *test*
 
+# datafile
+*.dat
+
 # plots and report
 *.pdf
 *.png
