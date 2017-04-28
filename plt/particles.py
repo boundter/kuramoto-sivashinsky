@@ -30,10 +30,15 @@ plt.rcParams["font.size"] = 17
 header, particles = ReadFile("data/particles.dat", 1, " ")
 
 fig, ax = plt.subplots()
+cmap = plt.get_cmap('jet')
+colors = cmap(np.linspace(0, 1.0, particles[1:].shape[0]))
+ax.set_ylabel(r"$x$")
+ax.set_xlabel(r"$t$")
 for i in range(1, particles.shape[0]):
     abs_d_data = np.abs(np.diff(particles[i]))
-    mask = np.hstack([ abs_d_data > abs_d_data.mean()+3*abs_d_data.std(), [False]])
+    mask = np.hstack([ abs_d_data > abs_d_data.mean()+12*abs_d_data.std(), [False]])
     masked_data = np.ma.MaskedArray(particles[i], mask)
-    ax.plot(particles[0], masked_data)
+    ax.plot(particles[0], masked_data, color=colors[i - 1])
 ax.set_ylim(0., header["L"])
-plt.show()
+fig.tight_layout()
+fig.savefig("plt/particles.pdf", dpi=300)
