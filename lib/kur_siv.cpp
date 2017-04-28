@@ -32,7 +32,7 @@ KuramotoSivashinsky::KuramotoSivashinsky(double step, double L,
   mt19937_64 gen (seed);
   uniform_real_distribution<double> dist(-1.0, 1.0);
   C.resize(N + 1, 0);
-  C[0] = complex<double> (1., 0.);
+  C[0] = complex<double> (0., 0.);
   for (int i = 1; i <= N; ++i) {
     C[i] = complex<double> (dist(gen), dist(gen));
   }
