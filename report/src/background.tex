@@ -21,10 +21,10 @@ This leads to
 \begin{equation}
   \frac{1}{2} \frac{\beta^{7/2}}{\alpha \gamma^{3/2}} \frac{\partial v^2 }{\partial y} + \frac{\beta^{7/2}}{\alpha \gamma^{3/2}} \frac{\partial^2 v }{\partial y^2} + \frac{\beta^{7/2}}{\alpha \gamma^{3/2}} \frac{\partial^4 v }{\partial y^4} = 0.
 \end{equation}
-There is the same coefficient in front of every term, so by simply multiplying by the inverse we get a coefficient free equation.
+There is the same coefficient in front of every term, so by multiplying by the inverse we get a coefficient free equation.
 
-This equation can not be solved analytically, even without the coefficients.
-But a typical ansatz for a PDE is to go the Fourier-space.
+This equation cannot be solved analytically, even without the coefficients.
+But a typical ansatz for a PDE is to go to the Fourier-space.
 Here we will use the Fourier-space of $x$.
 For u we assume periodic boundary conditions, to make the Fourier-space discrete, so $ u(x, t) = u(x + L, t) $.
 Using this and $ K = 2 \pi/L $ transforms $u$ to
@@ -42,9 +42,9 @@ We can rewrite the $u \partial_x u$ further by first considering the sums
 \begin{equation}
   \sum_{n \in \mathbb{Z}} C_n(t)  e^{in K x} \sum_{l \in \mathbb{Z}} C_l(t) i l K e^{il K x} = \sum_{n \in \mathbb{Z}} \sum_{l \in \mathbb{Z}} C_n(t) C_l(t) i l K e^{i (l+n) K x}.
 \end{equation}
-The both sums can easily be switched, since they are bounded.
+Both sums can be switched, since they are bounded.
 Next we introduce a new variable $m = n + l$.
-This is a one-to-one-map for constant $l$, so we can simply set $n = m - l$ and replace the sum over n by the sum over $m$,
+This is a one-to-one-map for constant $l$, so we set $n = m - l$ and replace the sum over $n$ by the sum over $m$,
 \begin{equation}
   \sum_{n \in \mathbb{Z}} \sum_{l \in \mathbb{Z}} C_n(t) C_l(t) i l K e^{i (l+n) K x} = \sum_{l \in \mathbb{Z}} \sum_{m \in \mathbb{Z}} e^{i m K x} i l K C_l(t) C_{m - l}(t).
 \end{equation}
@@ -55,11 +55,11 @@ Both sums are still bounded, so we can switch them again and reordering of the t
 This leads us to a system of coupled ODE with infinite dimensionality
 \begin{equation}
   \frac{d C_n(t)}{dt} + \sum_{m \in \mathbb{Z}} i m K C_m(t) C_{n - m}(t) -
-  n^2 K^2 C_n(t) + n^4 K^4 C_n(t) = 0.
+  n^2 K^2 C_n(t) + n^4 K^4 C_n(t) = 0. \label{eq:ODE}
 \end{equation}
-It still can not be solved analytically.
+It still cannot be solved analytically.
 But if we reduce the system to a finite number of modes we will be able to solve it numerically.
-To get a good estimate for the number of modes we can use the linear approximation
+To get a good estimate for the number of modes we use the linear approximation
 \begin{equation}
   \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t).
 \end{equation}
@@ -79,9 +79,14 @@ Regardless of the sign of the real or imaginary part of $C_n$, we will always ne
   N = \left \lfloor{1/K}\right \rfloor = \left \lfloor{\frac{L}{2\pi}}\right \rfloor.
 \end{equation}
 Here we can see that most modes disappear over time.
-For $L < 2 \pi$ we do not have any modes that grow according to the linear approximation, so the velocity on the film will tend to zero.
+For $L < 2 \pi$ we do not have any modes that grow according to the linear approximation.
 
-Now we can use $N$ to get the number of significant modes.
-Let us say the number of modes we want to look at is $\abs{n} < 3N$, to account for the nonlinear term.
-This is the Galerkin approximation of the Kuramoto-Sivashinsky equation and
-it can be solved numerically
+We use a number $M$ of modes, to get a Galerkin approximation of the system. $M$ should be bigger than the linear approximation for it to work. We assume all modes with $\abs{n} > M$ will tend to zero after a transient. Reordering (\ref{eq:ODE}) and using $C_{n > M}(t) = 0$ gives us
+\begin{equation}
+    \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t) - \sum_{m < M} i m K C_m(t) C_{n - m}(t).
+\end{equation}
+Since $C_{-n} = C_n^*$ it will be enough to evolve the positive modes. For $n > 0$ we can reduce the sum to
+\begin{equation}
+  \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t) - \sum_{m = -M + n}^{M} i m K C_m(t) C_{n - m}(t).
+\end{equation}
+This equation is the Galerkin approximation for the Kuramoto-Sivashinsky equation and can be solved numerically.
