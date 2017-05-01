@@ -87,6 +87,6 @@ We use a number $M$ of modes, to get a Galerkin approximation of the system. $M$
 \end{equation}
 Since $C_{-n} = C_n^*$ it will be enough to evolve the positive modes. For $n > 0$ we can reduce the sum to
 \begin{equation}
-  \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t) - \sum_{m = -M + n}^{M} i m K C_m(t) C_{n - m}(t).
+  \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t) - \sum_{m = -M + n}^{M} i m K C_m(t) C_{n - m}(t). \label{eq:galerkin}
 \end{equation}
 This equation is the Galerkin approximation for the Kuramoto-Sivashinsky equation and can be solved numerically.
