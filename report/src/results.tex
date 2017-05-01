@@ -1,0 +1,58 @@
+\section{Results}
+\subsection{$M$ - Modes to consider}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.66\textwidth]{modes}
+  \caption{Magnitude of modes after some time for $L=40$.}\label{fig:modes}
+\end{figure}
+First we need to know, how many modes we should consider in the simulation. The evolution of some modes for $L=40$ is plotted in figure \ref{fig:modes}. According to the linear approximation there will be $N=6$ evolving modes. As we can see in the figure, there are in reality about 20 modes. If we choose $M = 4N$ we will be on the safe side. Even if there are more modes, they will decrease drastically over time. This value will be used for all later simulations.
+
+\subsection{Solutions for different $L$}
+\begin{figure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\textwidth]{{{velocity_L6.29}}}
+    \caption{$L=6.29$}\label{fig:629}
+    \includegraphics[width=\textwidth]{{{velocity_L15.00}}}
+    \caption{$L=15$}\label{fig:15}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\textwidth]{{{velocity_L30.00}}}
+    \caption{$L=30$}\label{fig:30}
+    \includegraphics[width=\textwidth]{{{velocity_L100.00}}}
+    \caption{$L=100$}\label{fig:100}
+  \end{subfigure}
+  \caption{Evolution of the velocity field for different $L$.}\label{fig:L}
+\end{figure}
+In the figures \ref{fig:629} to \ref{fig:100} we can see the evolution of the velocity for different $L$. For \ref{fig:629} and \ref{fig:15} we can see clear patterns. They reached stability, or are about to. But if we look at \ref{fig:30} and \ref{fig:100}, we will see a different picture. They are not stationary, but are turbulent. For $L=30$ in \ref{fig:30} we see a mix of turbulences and stationary conditions. It would nearly be periodic, if it were not for the fluctuations in the small regions of red and the wiggling of the sign-change below them. In \ref{fig:100} there are a lot of different sign changes, which behave erratically. These are full turbulences.
+
+\subsubsection{Dependence on $M$}
+\begin{figure}
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\textwidth]{{{velocity_N16}}}
+    \caption{$M=16$}\label{fig:16}
+    \includegraphics[width=\textwidth]{{{velocity_N12}}}
+    \caption{$M=12$}\label{fig:12}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\textwidth]{{{velocity_N8}}}
+    \caption{$M=8$}\label{fig:8}
+    \includegraphics[width=\textwidth]{{{velocity_N7}}}
+    \caption{$M=7$}\label{fig:7}
+  \end{subfigure}
+  \caption{Evolution of the velocity field for $L=30$, but different $M$.}\label{fig:M}
+\end{figure}
+The solutions we have found depend on the number of modes $M$. An increase in $M$ would not change much, since the higher modes die off quickly, but a decrease will have measurable consequences. An overview for $L=30$ is given in figure \ref{fig:M}. For $L=30$ we have a linear approximation of $N = 4$.
+
+Between figure \ref{fig:16} and \ref{fig:12} we see a loss of the fine detail. The structure retains it turbulent state, but for the bigger $M$ the details are finer. Between \ref{fig:12} and \ref{fig:8} there is only a small change. And between \ref{fig:8} and \ref{fig:7} there is only one mode less and $M = 7 > N = 4$, yet we find, that there is no turbulences.
+
+\subsection{Particle advection}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.66\textwidth]{particles}
+  \caption{Advection of particles. They are spaced two units apart.}\label{fig:part}
+\end{figure}
+Now we place particles on the fluid and look at their advection for $L=60$. The particles are uniformly placed with a distance of two units. This is plotted in figure \ref{fig:part}. The evolution of the position $X$ is according to the equation
+\begin{equation}
+    \frac{d X}{dt} = u(x, t).
+\end{equation}
+As we can see all the particles start at different positions, but after some time they all meet up. After about 100 time units they all have the same trajectory.
