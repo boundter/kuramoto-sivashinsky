@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   const double h = 0.01;
   const double L = 30;
   const int N = atof(argv[1]);
-  const int n = 20000;
+  const int n = 50000;
   const double spatial_resolution = 200;
   FILE * datafile = fopen("data/velocity_modes.dat", "w");
   fprintf(datafile, "# h= %.9f , L= %.9f , N= %d\n", h, L, N);
