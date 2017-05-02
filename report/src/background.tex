@@ -20,7 +20,7 @@ Next we scale $x$ by $ x = \frac{\gamma^{1/2}}{\beta^{1/2}} y $.
 \end{equation}
 There is the same coefficient in front of every term, by multiplying with the inverse we get a coefficient free equation.
 
-This equation cannot be solved directly, even without the coefficients. A typical ansatz for such a PDE is to go to the Fourier-space, here we will use the Fourier-space of $x$. For $u$ we assume periodic boundary conditions, to make the Fourier-space discrete, so $ u(x, t) = u(x + L, t) $. Using this and $ K = 2 \pi/L $ transforms $u$ to
+This equation cannot be solved directly, even without the coefficients. A typical ansatz for such a PDE is to go to the Fourier-space, here we will use the Fourier-space of $x$. For $u$ we assume periodic boundary conditions to make the Fourier-space discrete, so $ u(x, t) = u(x + L, t) $. Using this and $ K = 2 \pi/L $ transforms $u$ to
 \begin{align}
   C_n(t) & = \frac{1}{L} \int_0^L dx \; u(x,t) e^{-in K x}, \\
   u(x, t) & = \sum_{n \in Z} C_n (t) e^{in K x}. \label{eq:inverse}
@@ -66,7 +66,7 @@ We can see that most modes disappear over time. For $L < 2 \pi$ we do not have a
 
 To get a Galerkin approximation of the system, we use a number $M$ of modes. $M$ should be bigger than the linear approximation for it to work. We assume all modes with $\abs{n} > M$ will tend to zero after a transient. Reordering (\ref{eq:ODE}) and using $C_{n > M}(t) = 0$ gives us
 \begin{equation}
-    \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t) - \sum_{\abs{m} < M} i m K C_m(t) C_{n - m}(t).
+    \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t) - \sum_{\abs{m} \leq M} i m K C_m(t) C_{n - m}(t).
 \end{equation}
 Since $C_{-n} = C_n^*$ it will be enough to evolve the positive modes. For $n > 0$ we can reduce the sum to
 \begin{equation}
