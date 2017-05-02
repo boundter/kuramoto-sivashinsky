@@ -1,40 +1,33 @@
 \section{Background}
-%TODO: Nice introduction and explanation of the different terms
 The PDE reads~\cite{ruyer-quil2014dynamics}
 \begin{equation}
   \frac{\partial u }{\partial t} + \frac{1}{2} \frac{\partial u^2 }{\partial x} + \frac{\partial^2 u }{\partial x^2} + \frac{\partial^4 u }{\partial x^4} = 0.\label{eq:PDE}
 \end{equation}
 
 This is a reduced form, which can always be reached by scaling of $t$, $u$ or $x$.
-Any coefficient in front of the time-derivative can be reduced by scaling the time, without affecting any of the other coefficients, so we do not need to consider this term.
-This reduces our system to
+
+Any coefficient in front of the time-derivative can be reduced by scaling the time, without affecting any of the other coefficients, so we do not need to consider this term. This reduces our system to
 \begin{equation}
   \frac{\alpha}{2} \frac{\partial u^2 }{\partial x} + \beta \frac{\partial^2 u }{\partial x^2} + \gamma \frac{\partial^4 u }{\partial x^4} = 0.
 \end{equation}
 We will use the transformation $ u =\beta^{3/2}/(\alpha \gamma^{1/2}) v $.
-Now we get
 \begin{equation}
   \frac{1}{2} \frac{\beta^3}{\alpha \gamma} \frac{\partial v^2 }{\partial x} + \frac{\beta^{5/2}}{\alpha \gamma^{1/2}} \frac{\partial^2 v }{\partial x^2} + \frac{\beta^{3/2} \gamma^{1/2}}{\alpha} \frac{\partial^4 v }{\partial x^4} = 0.
 \end{equation}
 Next we scale $x$ by $ x = \frac{\gamma^{1/2}}{\beta^{1/2}} y $.
-This leads to
 \begin{equation}
   \frac{1}{2} \frac{\beta^{7/2}}{\alpha \gamma^{3/2}} \frac{\partial v^2 }{\partial y} + \frac{\beta^{7/2}}{\alpha \gamma^{3/2}} \frac{\partial^2 v }{\partial y^2} + \frac{\beta^{7/2}}{\alpha \gamma^{3/2}} \frac{\partial^4 v }{\partial y^4} = 0.
 \end{equation}
-There is the same coefficient in front of every term, so by multiplying by the inverse we get a coefficient free equation.
+There is the same coefficient in front of every term, by multiplying with the inverse we get a coefficient free equation.
 
-This equation cannot be solved analytically, even without the coefficients.
-But a typical ansatz for a PDE is to go to the Fourier-space.
-Here we will use the Fourier-space of $x$.
-For u we assume periodic boundary conditions, to make the Fourier-space discrete, so $ u(x, t) = u(x + L, t) $.
-Using this and $ K = 2 \pi/L $ transforms $u$ to
+This equation cannot be solved directly, even without the coefficients. A typical ansatz for such a PDE is to go to the Fourier-space, here we will use the Fourier-space of $x$. For $u$ we assume periodic boundary conditions, to make the Fourier-space discrete, so $ u(x, t) = u(x + L, t) $. Using this and $ K = 2 \pi/L $ transforms $u$ to
 \begin{align}
   C_n(t) & = \frac{1}{L} \int_0^L dx \; u(x,t) e^{-in K x}, \\
   u(x, t) & = \sum_{n \in Z} C_n (t) e^{in K x}. \label{eq:inverse}
 \end{align}
-Because $u$ is a real function we know that $C_{-n}(t) = {C_n(t)}^{*}$.
+Because $u$ is a real function we know that $C_{-n}(t) = {C_n(t)}^{*}$, where $^*$ denotes the complex conjugate.
 
-Now we can plug (\ref{eq:inverse}) in equation (\ref{eq:PDE}) and use $1/2 \partial_x u^2 = u \partial_x u$ to get
+Now we can plug (\ref{eq:inverse}) in (\ref{eq:PDE}) and use $1/2 \partial_x u^2 = u \partial_x u$ to get
 \begin{equation}
   \sum_{n \in \mathbb{Z}} e^{in K x} \left[ \frac{d C_n(t)}{dt} + C_n(t) \sum_{l \in \mathbb{Z}} C_l(t) i l K e^{il K x} - n^2 K^2 C_n(t) + n^4 K^4 C_n(t) \right] = 0.
 \end{equation}
@@ -42,13 +35,11 @@ We can rewrite the $u \partial_x u$ further by first considering the sums
 \begin{equation}
   \sum_{n \in \mathbb{Z}} C_n(t)  e^{in K x} \sum_{l \in \mathbb{Z}} C_l(t) i l K e^{il K x} = \sum_{n \in \mathbb{Z}} \sum_{l \in \mathbb{Z}} C_n(t) C_l(t) i l K e^{i (l+n) K x}.
 \end{equation}
-Both sums can be switched, since they are bounded.
-Next we introduce a new variable $m = n + l$.
-This is a one-to-one-map for constant $l$, so we set $n = m - l$ and replace the sum over $n$ by the sum over $m$,
+The order of the sums can be switched, since they are bounded. Next we introduce a new variable $m = n + l$. This is a one-to-one-map for constant $l$, so we set $n = m - l$ and replace the sum over $n$ by the sum over $m$,
 \begin{equation}
   \sum_{n \in \mathbb{Z}} \sum_{l \in \mathbb{Z}} C_n(t) C_l(t) i l K e^{i (l+n) K x} = \sum_{l \in \mathbb{Z}} \sum_{m \in \mathbb{Z}} e^{i m K x} i l K C_l(t) C_{m - l}(t).
 \end{equation}
-Both sums are still bounded, so we can switch them again and reordering of the terms leads to
+The sums are still bounded, so we can switch them again and reordering of the terms leads to
 \begin{equation}
   u \partial_x u =  \sum_{m \in \mathbb{Z}} e^{i m K x} \sum_{l \in \mathbb{Z}} i l K C_l(t) C_{m - l}(t).
 \end{equation}
@@ -57,36 +48,28 @@ This leads us to a system of coupled ODE with infinite dimensionality
   \frac{d C_n(t)}{dt} + \sum_{m \in \mathbb{Z}} i m K C_m(t) C_{n - m}(t) -
   n^2 K^2 C_n(t) + n^4 K^4 C_n(t) = 0. \label{eq:ODE}
 \end{equation}
-It still cannot be solved analytically.
-But if we reduce the system to a finite number of modes we will be able to solve it numerically.
-To get a good estimate for the number of modes we use the linear approximation
+It still cannot be solved analytically, but if we reduce the system to a finite number of modes we will be able to solve it numerically. To get a good estimate for the number of modes we use the linear approximation
 \begin{equation}
   \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t).
 \end{equation}
-$C_n$ is a complex number, so we need to consider both parts, the real one and the imaginary one.
-But according to the linearized ODE both will evolve according to the same ODE, so let us call $c_n$ the real part of $C_n$.
-The calculation for the imaginary part is exactly the same.
-If $c_n = 0$ or $n = 0$ we will always have $d_t c_n = 0$, so nothing happens.
+$C_n$ is a complex number, so we need to consider both parts, the real one and the imaginary one. But according to the linearization both will evolve according to the same ODE. Let us call $c_n$ the real part of $C_n$, the calculation for the imaginary part will be exactly the same. If $c_n = 0$ or $n = 0$ we will always have $d_t c_n = 0$, nothing happens.
 
-First we assume $c_n > 0$, so we need $d_t c_n > 0$ for it to grow.
-This leads us to $n^2 K^2 - n^4 K^4 > 0$. But this can only be fulfilled for $1/K > n$.
+But if we assume $c_n > 0$, we need $d_t c_n > 0$ for it to grow. This leads us to $n^2 K^2 - n^4 K^4 > 0$. But this can only be fulfilled for $1/K > n$.
 
-Next we assume $c_n < 0$, so we need $d_t c_n < 0$ for it to grow.
-This leads us again to $n^2 K^2 - n^4 K^4 > 0$.
+Next we assume $c_n < 0$, so we need $d_t c_n < 0$ for it to grow. This leads us again to $n^2 K^2 - n^4 K^4 > 0$.
 
-Regardless of the sign of the real or imaginary part of $C_n$, we will always need $1/K > n$. Or in other words, the number of modes $\abs{n} < N$ that grow is given by
+Regardless of the sign of the real or imaginary part of $C_n$, we will always need $1/K > n$. Or in other words, the number of modes $N$ that grow is given by
 \begin{equation}
   N = \left \lfloor{1/K}\right \rfloor = \left \lfloor{\frac{L}{2\pi}}\right \rfloor.
 \end{equation}
-Here we can see that most modes disappear over time.
-For $L < 2 \pi$ we do not have any modes that grow according to the linear approximation.
+We can see that most modes disappear over time. For $L < 2 \pi$ we do not have any modes that grow according to the linear approximation.
 
-We use a number $M$ of modes, to get a Galerkin approximation of the system. $M$ should be bigger than the linear approximation for it to work. We assume all modes with $\abs{n} > M$ will tend to zero after a transient. Reordering (\ref{eq:ODE}) and using $C_{n > M}(t) = 0$ gives us
+To get a Galerkin approximation of the system, we use a number $M$ of modes. $M$ should be bigger than the linear approximation for it to work. We assume all modes with $\abs{n} > M$ will tend to zero after a transient. Reordering (\ref{eq:ODE}) and using $C_{n > M}(t) = 0$ gives us
 \begin{equation}
-    \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t) - \sum_{m < M} i m K C_m(t) C_{n - m}(t).
+    \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t) - \sum_{\abs{m} < M} i m K C_m(t) C_{n - m}(t).
 \end{equation}
 Since $C_{-n} = C_n^*$ it will be enough to evolve the positive modes. For $n > 0$ we can reduce the sum to
 \begin{equation}
   \frac{d C_n(t)}{dt} = \left[ n^2 K^2 - n^4 K^4 \right] C_n(t) - \sum_{m = -M + n}^{M} i m K C_m(t) C_{n - m}(t). \label{eq:galerkin}
 \end{equation}
-This equation is the Galerkin approximation for the Kuramoto-Sivashinsky equation and can be solved numerically.
+This equation is the Galerkin approximation for the Kuramoto-Sivashinsky equation and can be solved numerically. It reduces the system of infinite dimensionality to a system with finite dimensionality by considering only the changing modes.
