@@ -25,10 +25,10 @@
 using namespace std;
 
 int main() {
-  const double h = 0.001;
+  const double h = 0.01;
   const double L = 40.;
   const int N = 120;
-  const int n = 1000;
+  const int n = 100;
   FILE * datafile = fopen("data/modes.dat", "w");
 
   fprintf(datafile, "# h= %.9f , L= %.9f , N= %d\n", h, L, N);
